@@ -27,44 +27,12 @@ include_once 'connection.php';
       id="searchInput"
       autocomplete="off"
     >
+    
     <!-- Dropdown de sugestões -->
     <div class="search-suggestions" id="searchSuggestions">
-      <div class="suggestion-header">
-        <small>Títulos Sugeridos</small>
-      </div>
-      
-      <div class="suggestion-item">
-        <span class="suggestion-title">O Nome do Vento</span>
-        <small class="suggestion-author">Patrick Rothfuss</small>
-      </div>
-      <div class="suggestion-item">
-        <span class="suggestion-title">1984</span>
-        <small class="suggestion-author">George Orwell</small>
-      </div>
-      <div class="suggestion-item">
-        <span class="suggestion-title">A Sombra do Vento</span>
-        <small class="suggestion-author">Carlos Ruiz Zafón</small>
-      </div>
-
-      <div class="suggestion-divider"></div>
-
-      <div class="suggestion-item">
-        <span class="suggestion-title">Patrick Rothfuss</span>
-        <small class="suggestion-type">Autor</small>
-      </div>
-      <div class="suggestion-item">
-        <span class="suggestion-title">George Orwell</span>
-        <small class="suggestion-type">Autor</small>
-      </div>
-
-      <div class="suggestion-divider"></div>
-
-      <div class="suggestion-footer">
-        <a href="#" class="see-all-link">Ver todos os resultados</a>
-      </div>
     </div>
   </div>
-  <button class="btn btn-outline-secondary" type="submit">
+  <button class="btn btn-outline-secondary">
     <i class="bi bi-search"></i>
   </button>
 </form>
@@ -93,7 +61,7 @@ include_once 'connection.php';
       </div>
       <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
-          <li class="nav-item"><a class="nav-link" href="melhoravaliados.php">Melhor Avaliados</a></li>
+          <li class="nav-item"><a class="nav-link" href="categoria.php?tipo=melhoravaliados">Melhor Avaliados</a></li>
           <li class="nav-item"><a class="nav-link" href="estantedigital.php">Estante Digital</a></li>
           <li class="nav-item"><a class="nav-link" href="recomendacoes.php">Recomendações</a></li>
           <li class="nav-item"><a class="nav-link" href="ajuda.php">Ajuda</a></li>

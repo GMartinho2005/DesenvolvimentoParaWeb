@@ -23,7 +23,7 @@ if (isset($_SESSION['username']) && !empty($_SESSION['username'])) {
     <div class="banner-container position-relative text-white banner-img-container">
         <img src="imgs/a-realistic-horizontal-photographic-bann_2vM2opncSoiYxLnbY74OgA_YLcLwR7nS1uiVLfO2-DqPA.jpeg" class="banner-img">
         <div class="banner-content mx-auto p-3 p-md-0 text-center text-md-start">
-            <h1 class="fw-bold display-6">Se tem dúvidas, nós temos as respostas e poderá encontrá-las nesta área.</h1>
+            <h1 class="fw-bold display-6">Se tem dúvidas, nós temos as respostas e poderá encontrá-las nesta área</h1>
         </div>
     </div>
 
@@ -46,7 +46,7 @@ if (isset($_SESSION['username']) && !empty($_SESSION['username'])) {
                                     </button>
                                 </h2>
                                 <div id="collapseRegisto1" class="accordion-collapse collapse" data-bs-parent="#nestedAccordionRegisto">
-                                    <div class="accordion-body">O registo é efetuado através do ícone de utilizador...</div>
+                                    <div class="accordion-body">O registo é efetuado através do ícone de utilizador.</div>
                                 </div>
                             </div>
                             <div class="accordion-item">
@@ -56,7 +56,7 @@ if (isset($_SESSION['username']) && !empty($_SESSION['username'])) {
                                     </button>
                                 </h2>
                                 <div id="collapseRegisto2" class="accordion-collapse collapse" data-bs-parent="#nestedAccordionRegisto">
-                                    <div class="accordion-body">Não. O acesso ao Letrário Coimbra é e será sempre 100% gratuito...</div>
+                                    <div class="accordion-body">Não. O acesso ao Letrário Coimbra é e será sempre 100% gratuito.</div>
                                 </div>
                             </div>
                             <div class="accordion-item">
@@ -66,7 +66,7 @@ if (isset($_SESSION['username']) && !empty($_SESSION['username'])) {
                                     </button>
                                 </h2>
                                 <div id="collapseRegisto3" class="accordion-collapse collapse" data-bs-parent="#nestedAccordionRegisto">
-                                    <div class="accordion-body">Na página de "Login", encontrará um link "Esqueceu-se da palavra-passe?"...</div>
+                                    <div class="accordion-body">Na página "Conta", encontrará um botão "RECUPERAR PASSWORD".</div>
                                 </div>
                             </div>
                         </div> 
@@ -90,7 +90,7 @@ if (isset($_SESSION['username']) && !empty($_SESSION['username'])) {
                                     </button>
                                 </h2>
                                 <div id="collapseEstante1" class="accordion-collapse collapse" data-bs-parent="#nestedAccordionEstante">
-                                    <div class="accordion-body">Adoramos sugestões! Embora não possamos garantir...</div>
+                                    <div class="accordion-body">Adoramos sugestões! Embora não possamos garantir que todas são adicionadas devido aos direitos autorais, analisamos cuidadosamente todos os pedidos para futuras atualizações da nossa estante.</div>
                                 </div>
                             </div>
                         </div>
@@ -124,7 +124,7 @@ if (isset($_SESSION['username']) && !empty($_SESSION['username'])) {
                                     </button>
                                 </h2>
                                 <div id="collapseDisp2" class="accordion-collapse collapse" data-bs-parent="#nestedAccordionDispositivos">
-                                    <div class="accordion-body">Atualmente, os nossos ficheiros são disponibilizados em PDF...</div>
+                                    <div class="accordion-body">Atualmente, os nossos ficheiros são disponibilizados apenas em PDF.</div>
                                 </div>
                             </div>
                         </div>
@@ -176,34 +176,85 @@ if (isset($_SESSION['username']) && !empty($_SESSION['username'])) {
 </main>
 
 <?php require('includes/footer.php'); ?>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const searchInput = document.getElementById('searchInput');
   const searchSuggestions = document.getElementById('searchSuggestions');
   const searchForm = document.getElementById('searchForm');
-  if (searchForm && searchInput && searchSuggestions) {
+
+  if(searchInput && searchSuggestions && searchForm){
+      
+      // Função para fechar
+      function closeSuggestions() {
+          searchSuggestions.classList.remove('show');
+      }
+
       searchInput.addEventListener('input', function() {
-        if (this.value.length > 0) searchSuggestions.classList.add('show');
-        else searchSuggestions.classList.remove('show');
+        const query = this.value.trim();
+
+        if (query.length < 2) {
+            closeSuggestions();
+            return;
+        }
+
+        // Chamada AJAX
+        fetch('ajax/pesquisa.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ termo: query })
+        })
+        .then(response => response.json())
+        .then(data => {
+            let html = '';
+
+            // 1. SE HOUVER LIVROS
+            if (data.livros && data.livros.length > 0) {
+                html += '<div class="suggestion-header"><small>Livros Encontrados</small></div>';
+                
+                data.livros.forEach(livro => {
+                    html += `
+                        <div class="suggestion-item" onclick="window.location.href='livro.php?id=${livro.id}'">
+                            <span class="suggestion-title">${livro.titulo}</span>
+                            <small class="suggestion-author">${livro.autor || 'Autor Desconhecido'}</small>
+                        </div>
+                    `;
+                });
+            } 
+            // 2. SE NÃO HOUVER RESULTADOS
+            else {
+                html = '<div class="p-3 text-muted small text-center">Nenhum livro encontrado.</div>';
+            }
+
+            searchSuggestions.innerHTML = html;
+            searchSuggestions.classList.add('show');
+        })
+        .catch(err => console.error(err));
       });
-      searchInput.addEventListener('focus', function() {
-        if (this.value.length > 0) searchSuggestions.classList.add('show');
-      });
+
+      // Fechar ao clicar fora
       document.addEventListener('click', function(e) {
-        if (!searchForm.contains(e.target)) searchSuggestions.classList.remove('show');
+        if (!searchForm.contains(e.target)) closeSuggestions();
       });
-      document.querySelectorAll('.suggestion-item').forEach(item => {
-        item.addEventListener('click', function() {
-          const title = this.querySelector('.suggestion-title').textContent;
-          searchInput.value = title; searchSuggestions.classList.remove('show'); searchInput.focus();
-        });
-      });
+
+      // Tecla Escape
       searchInput.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') { searchSuggestions.classList.remove('show'); searchInput.blur(); }
+        if (e.key === 'Escape') {
+          closeSuggestions();
+          searchInput.blur();
+        }
       });
-      const seeAll = document.querySelector('.see-all-link');
-      if(seeAll) seeAll.addEventListener('click', function(e) { e.preventDefault(); searchForm.submit(); });
+
+      // Submit do formulário (Enter) - Redireciona para pesquisa geral se quiseres
+      searchForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        // Opcional: Podes manter isto se quiseres uma página de resultados
+        /* const query = searchInput.value.trim();
+        if(query) {
+            window.location.href = 'index.php?q=' + encodeURIComponent(query);
+        }
+        */
+      });
   }
 });
 </script>

@@ -10,7 +10,6 @@ require('includes/connection.php');
   <title>Recomendações - Letrário Coimbra</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-  
   <link rel="stylesheet" href="css/outraspag.css">
 </head>
 <body class="d-flex flex-column min-vh-100">  
@@ -31,179 +30,146 @@ require('includes/connection.php');
                     <div class="card quiz-card shadow-lg border-0 rounded-4 overflow-hidden">
                         
                         <div class="progress d-none" id="quiz-progress" style="height: 6px; border-radius: 0;">
-                            <div class="progress-bar bg-dark" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
                         </div>
 
                         <div class="card-body p-4 p-md-5 text-center">
 
                             <div id="quiz-intro" class="quiz-step">
                                 <h1 class="display-5 fw-bold mb-3">Descubra o seu Próximo Livro</h1>
-                                <p class="lead mb-5 text-muted">Não sabe o que ler a seguir? Responda a 4 perguntas rápidas e nós encontramos a recomendação perfeita.</p>
+                                <p class="lead mb-5 text-muted">Não sabe o que ler a seguir? Responda a 5 perguntas rápidas e nós encontramos a recomendação perfeita.</p>
                                 <button class="btn btn-dark btn-lg px-5 rounded-pill fw-bold" onclick="startQuiz()">Começar Quiz</button>
                             </div>
 
                             <div id="quiz-q1" class="quiz-step d-none">
-                                <span class="badge bg-light text-dark border mb-3">Pergunta 1 de 4</span>
-                                <h3 class="mb-4 fw-bold">Que tipo de filme prefere ver numa sexta-feira à noite?</h3>
+                                <span class="badge bg-light text-dark border mb-3">Pergunta 1 de 5</span>
+                                <h3 class="mb-4 fw-bold">Onde gostaria de passar as suas férias ideais?</h3>
                                 <div class="d-grid gap-3 col-md-10 mx-auto">
-                                    <button class="btn btn-quiz-option" onclick="selectAnswer('fantasy')">Uma grande aventura épica com magia 🏰</button>
-                                    <button class="btn btn-quiz-option" onclick="selectAnswer('romance')">Uma história de amor comovente ❤️</button>
-                                    <button class="btn btn-quiz-option" onclick="selectAnswer('mystery')">Um mistério complexo, "quem matou?" 🔎</button>
-                                    <button class="btn btn-quiz-option" onclick="selectAnswer('scifi')">Uma viagem ao futuro ou ao espaço 🚀</button>
+                                    <button class="btn btn-quiz-option" onclick="selectAnswer(['fantasia', 'conto'])">Num mundo mágico ou floresta encantada 🏰</button>
+                                    <button class="btn btn-quiz-option" onclick="selectAnswer(['ficcao', 'policial'])">Numa cidade futurista ou cena de crime 🌃</button>
+                                    <button class="btn btn-quiz-option" onclick="selectAnswer(['historia', 'classica', 'biografia'])">Num local histórico ou museu antigo 🏛️</button>
+                                    <button class="btn btn-quiz-option" onclick="selectAnswer(['romance', 'poesia', 'musica'])">Num café romântico ou sala de concertos 🎻</button>
+                                </div>
+                                <div class="mt-4">
+                                    <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="prevQuestion()">
+                                        <i class="bi bi-arrow-left"></i> Voltar ao Início
+                                    </button>
                                 </div>
                             </div>
 
                             <div id="quiz-q2" class="quiz-step d-none">
-                                <span class="badge bg-light text-dark border mb-3">Pergunta 2 de 4</span>
-                                <h3 class="mb-4 fw-bold">Qual destes destinos de férias escolheria?</h3>
+                                <span class="badge bg-light text-dark border mb-3">Pergunta 2 de 5</span>
+                                <h3 class="mb-4 fw-bold">O que procura sentir ao ler um livro?</h3>
                                 <div class="d-grid gap-3 col-md-10 mx-auto">
-                                    <button class="btn btn-quiz-option" onclick="selectAnswer('scifi')">Uma cidade super-tecnológica, como Tóquio 🌃</button>
-                                    <button class="btn btn-quiz-option" onclick="selectAnswer('mystery')">Uma mansão antiga com uma história sombria 🏚️</button>
-                                    <button class="btn btn-quiz-option" onclick="selectAnswer('fantasy')">Uma paisagem natural e selvagem 🏔️</button>
-                                    <button class="btn btn-quiz-option" onclick="selectAnswer('romance')">Um passeio romântico por Paris ou Veneza 🛶</button>
+                                    <button class="btn btn-quiz-option" onclick="selectAnswer(['humor', 'conto'])">Quero rir e divertir-me 😂</button>
+                                    <button class="btn btn-quiz-option" onclick="selectAnswer(['halloween', 'policial'])">Quero sentir medo ou suspense 😱</button>
+                                    <button class="btn btn-quiz-option" onclick="selectAnswer(['financas', 'biografia', 'historia'])">Quero aprender e evoluir 🧠</button>
+                                    <button class="btn btn-quiz-option" onclick="selectAnswer(['romance', 'poesia'])">Quero emocionar-me e sonhar ❤️</button>
                                 </div>
-                                <div class="mt-4 text-start">
-                                    <button class="btn btn-link text-muted text-decoration-none px-0" onclick="prevQuestion()"><i class="bi bi-arrow-left"></i> Voltar</button>
+                                <div class="mt-4">
+                                    <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="prevQuestion()">
+                                        <i class="bi bi-arrow-left"></i> Voltar
+                                    </button>
                                 </div>
                             </div>
-                            
+
                             <div id="quiz-q3" class="quiz-step d-none">
-                                <span class="badge bg-light text-dark border mb-3">Pergunta 3 de 4</span>
-                                <h3 class="mb-4 fw-bold">Qual destas palavras mais o atrai?</h3>
+                                <span class="badge bg-light text-dark border mb-3">Pergunta 3 de 5</span>
+                                <h3 class="mb-4 fw-bold">Quem seria o protagonista ideal?</h3>
                                 <div class="d-grid gap-3 col-md-10 mx-auto">
-                                    <button class="btn btn-quiz-option" onclick="selectAnswer('mystery')">Segredo</button>
-                                    <button class="btn btn-quiz-option" onclick="selectAnswer('romance')">Paixão</button>
-                                    <button class="btn btn-quiz-option" onclick="selectAnswer('fantasy')">Magia</button>
-                                    <button class="btn btn-quiz-option" onclick="selectAnswer('scifi')">Futuro</button>
+                                    <button class="btn btn-quiz-option" onclick="selectAnswer(['biografia', 'historia', 'financas'])">Uma pessoa real que mudou o mundo 🌍</button>
+                                    <button class="btn btn-quiz-option" onclick="selectAnswer(['fantasia', 'ficcao'])">Um herói com poderes ou tecnologia ⚡</button>
+                                    <button class="btn btn-quiz-option" onclick="selectAnswer(['policial', 'halloween'])">Um detetive ou sobrevivente inteligente 🕵️</button>
+                                    <button class="btn btn-quiz-option" onclick="selectAnswer(['classica', 'musica', 'romance'])">Um artista ou alma incompreendida 🎨</button>
                                 </div>
-                                <div class="mt-4 text-start">
-                                    <button class="btn btn-link text-muted text-decoration-none px-0" onclick="prevQuestion()"><i class="bi bi-arrow-left"></i> Voltar</button>
+                                <div class="mt-4">
+                                    <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="prevQuestion()">
+                                        <i class="bi bi-arrow-left"></i> Voltar
+                                    </button>
                                 </div>
                             </div>
-                            
+
                             <div id="quiz-q4" class="quiz-step d-none">
-                                <span class="badge bg-light text-dark border mb-3">Pergunta 4 de 4</span>
-                                <h3 class="mb-4 fw-bold">Que tipo de herói prefere?</h3>
+                                <span class="badge bg-light text-dark border mb-3">Pergunta 4 de 5</span>
+                                <h3 class="mb-4 fw-bold">Em que época prefere que a história se passe?</h3>
                                 <div class="d-grid gap-3 col-md-10 mx-auto">
-                                    <button class="btn btn-quiz-option" onclick="selectAnswer('fantasy', true)">O "Escolhido" destinado a salvar o mundo.</button>
-                                    <button class="btn btn-quiz-option" onclick="selectAnswer('scifi', true)">O cientista ou explorador corajoso.</button>
-                                    <button class="btn btn-quiz-option" onclick="selectAnswer('romance', true)">A pessoa comum que luta pelo amor.</button>
-                                    <button class="btn btn-quiz-option" onclick="selectAnswer('mystery', true)">O detetive que vê o que ninguém vê.</button>
+                                    <button class="btn btn-quiz-option" onclick="selectAnswer(['ficcao'])">No futuro distante 🚀</button>
+                                    <button class="btn btn-quiz-option" onclick="selectAnswer(['historia', 'classica', 'biografia'])">No passado real ⏳</button>
+                                    <button class="btn btn-quiz-option" onclick="selectAnswer(['fantasia', 'halloween'])">Num tempo indefinido ou imaginário 🐉</button>
+                                    <button class="btn btn-quiz-option" onclick="selectAnswer(['financas', 'humor', 'conto', 'policial'])">Nos dias de hoje 📅</button>
                                 </div>
-                                <div class="mt-4 text-start">
-                                    <button class="btn btn-link text-muted text-decoration-none px-0" onclick="prevQuestion()"><i class="bi bi-arrow-left"></i> Voltar</button>
+                                <div class="mt-4">
+                                    <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="prevQuestion()">
+                                        <i class="bi bi-arrow-left"></i> Voltar
+                                    </button>
                                 </div>
                             </div>
 
-                            <div id="result-fantasy" class="quiz-step d-none">
-                                <div class="text-center mb-4">
-                                    <i class="bi bi-stars text-warning display-1"></i>
+                            <div id="quiz-q5" class="quiz-step d-none">
+                                <span class="badge bg-light text-dark border mb-3">Pergunta Final</span>
+                                <h3 class="mb-4 fw-bold">Escolha uma palavra que o define hoje:</h3>
+                                <div class="d-grid gap-3 col-md-10 mx-auto">
+                                    <button class="btn btn-quiz-option" onclick="selectAnswer(['financas'], true)">Ambição 💰</button>
+                                    <button class="btn btn-quiz-option" onclick="selectAnswer(['musica', 'poesia'], true)">Arte 🎵</button>
+                                    <button class="btn btn-quiz-option" onclick="selectAnswer(['fantasia', 'ficcao'], true)">Imaginação ✨</button>
+                                    <button class="btn btn-quiz-option" onclick="selectAnswer(['romance', 'classica'], true)">Sentimento 🌹</button>
                                 </div>
-                                <h2 class="fw-bold">FANTASIA</h2>
-                                <p class="lead mb-4">Adora mundos épicos e magia. A nossa sugestão:</p>
+                                <div class="mt-4">
+                                    <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="prevQuestion()">
+                                        <i class="bi bi-arrow-left"></i> Voltar
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div id="quiz-loading" class="quiz-step d-none">
+                                <div class="spinner-border text-dark mb-4" style="width: 3rem; height: 3rem;" role="status"></div>
+                                <h3 class="fw-bold">A analisar as suas respostas...</h3>
+                                <p class="text-muted">A consultar a nossa biblioteca...</p>
+                            </div>
+
+                            <div id="quiz-result" class="quiz-step d-none">
+                                <div class="text-center mb-4">
+                                    <i class="text-primary display-1"></i>
+                                </div>
+                                
+                                <h5 class="text-muted text-uppercase small fw-bold mb-2">Recomendamos a categoria:</h5>
+                                <h2 class="fw-bold mb-4" id="res-categoria-nome">...</h2>
                                 
                                 <div class="card mb-4 border-0 shadow-sm bg-light overflow-hidden mx-auto" style="max-width: 500px;">
                                     <div class="row g-0">
                                         <div class="col-4">
-                                            <img src="imgs/b1bd2a5bad30e595246e62ba2f3a3117.webp" class="img-fluid w-100 h-100 object-fit-cover" alt="Capa do Livro">
+                                            <img id="res-img" src="" class="img-fluid w-100 h-100 object-fit-cover" alt="Capa">
                                         </div>
                                         <div class="col-8 d-flex align-items-center">
                                             <div class="card-body text-start">
-                                                <h5 class="card-title fw-bold">O Nome do Vento</h5>
-                                                <p class="card-text small text-muted">Patrick Rothfuss</p>
-                                                <a href="livro1.php" class="btn-sug rounded-pill btn btn-dark btn-sm stretched-link">Saber Mais</a>
+                                                <h5 class="card-title fw-bold" id="res-titulo">...</h5>
+                                                <p class="card-text small text-muted" id="res-autor">...</p>
+                                                <a id="res-link" href="#" class="btn-sug rounded-pill btn btn-dark btn-sm stretched-link">Ver Detalhes</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <button class="btn btn-link text-muted text-decoration-none" onclick="restartQuiz()">Recomeçar Quiz ↺</button>
-                            </div>
-
-                            <div id="result-scifi" class="quiz-step d-none">
-                                <div class="text-center mb-4">
-                                    <i class="bi bi-rocket-takeoff text-primary display-1"></i>
-                                </div>
-                                <h2 class="fw-bold">FICÇÃO CIENTÍFICA</h2>
-                                <p class="lead mb-4">O futuro e o desconhecido fascinam-no. A nossa sugestão:</p>
-                                
-                                <div class="card mb-4 border-0 shadow-sm bg-light overflow-hidden mx-auto" style="max-width: 500px;">
-                                    <div class="row g-0">
-                                        <div class="col-4">
-                                            <img src="imgs/b1bd2a5bad30e595246e62ba2f3a3117.webp" class="img-fluid w-100 h-100 object-fit-cover" alt="Capa do Livro">
-                                        </div>
-                                        <div class="col-8 d-flex align-items-center">
-                                            <div class="card-body text-start">
-                                                <h5 class="card-title fw-bold">Dune</h5>
-                                                <p class="card-text small text-muted">Frank Herbert</p>
-                                                <a href="#" class="btn-sug rounded-pill btn btn-dark btn-sm stretched-link">Saber Mais</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button class="btn btn-link text-muted text-decoration-none" onclick="restartQuiz()">Recomeçar Quiz ↺</button>
-                            </div>
-                            
-                            <div id="result-romance" class="quiz-step d-none">
-                                <div class="text-center mb-4">
-                                    <i class="bi bi-heart-fill text-danger display-1"></i>
-                                </div>
-                                <h2 class="fw-bold">ROMANCE</h2>
-                                <p class="lead mb-4">Procura emoções fortes e ligações humanas. A nossa sugestão:</p>
-                                 <div class="card mb-4 border-0 shadow-sm bg-light overflow-hidden mx-auto" style="max-width: 500px;">
-                                    <div class="row g-0">
-                                        <div class="col-4">
-                                            <img src="imgs/b1bd2a5bad30e595246e62ba2f3a3117.webp" class="img-fluid w-100 h-100 object-fit-cover" alt="Capa do Livro">
-                                        </div>
-                                        <div class="col-8 d-flex align-items-center">
-                                            <div class="card-body text-start">
-                                                <h5 class="card-title fw-bold">Orgulho e Preconceito</h5>
-                                                <p class="card-text small text-muted">Jane Austen</p>
-                                                <a href="#" class="btn-sug rounded-pill btn btn-dark btn-sm stretched-link">Saber Mais</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button class="btn btn-link text-muted text-decoration-none" onclick="restartQuiz()">Recomeçar Quiz ↺</button>
-                            </div>
-                            
-                            <div id="result-mystery" class="quiz-step d-none">
-                                 <div class="text-center mb-4">
-                                    <i class="bi bi-search text-dark display-1"></i>
-                                </div>
-                                <h2 class="fw-bold">MISTÉRIO</h2>
-                                <p class="lead mb-4">Gosta de desvendar segredos e puzzles. A nossa sugestão:</p>
-                                 <div class="card mb-4 border-0 shadow-sm bg-light overflow-hidden mx-auto" style="max-width: 500px;">
-                                    <div class="row g-0">
-                                        <div class="col-4">
-                                            <img src="imgs/b1bd2a5bad30e595246e62ba2f3a3117.webp" class="img-fluid w-100 h-100 object-fit-cover" alt="Capa do Livro">
-                                        </div>
-                                        <div class="col-8 d-flex align-items-center">
-                                            <div class="card-body text-start">
-                                                <h5 class="card-title fw-bold">E Não Sobrou Nenhum</h5>
-                                                <p class="card-text small text-muted">Agatha Christie</p>
-                                                <a href="#" class="btn-sug rounded-pill btn btn-dark btn-sm stretched-link">Saber Mais</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button class="btn btn-link text-muted text-decoration-none" onclick="restartQuiz()">Recomeçar Quiz ↺</button>
+                                <button class="btn btn-link text-muted text-decoration-none" onclick="location.reload()">Recomeçar Quiz ↺</button>
                             </div>
 
                         </div>
                     </div> 
-                </div>
-            </div>
+                </div> 
+            </div> 
         </div>
     </main>
 
-    <?php 
-      require('includes/footer.php');
-    ?>
-
+    <?php require('includes/footer.php'); ?>
     <script>
-        let userAnswers = {}; 
+        let scores = {}; 
         let currentQuestion = 0;
-        const totalQuestions = 4;
+        const totalQuestions = 5;
+
+        // Array para guardar o histórico de respostas para poder reverter a pontuação se o user voltar atrás
+        // (Simplificação: ao voltar, apenas recuamos no passo, a pontuação recalcula-se ao avançar de novo)
+        
+        const allCats = ['ficcao', 'romance', 'fantasia', 'biografia', 'classica', 'conto', 'financas', 'halloween', 'historia', 'humor', 'musica', 'poesia', 'policial'];
+        allCats.forEach(c => scores[c] = 0);
 
         function startQuiz() {
             changeStep('quiz-intro', 'quiz-q1');
@@ -212,11 +178,14 @@ require('includes/connection.php');
             updateProgressBar();
         }
 
-        function selectAnswer(category, isLast = false) {
-            userAnswers[currentQuestion] = category;
-            
+        function selectAnswer(categories, isLast = false) {
+            // Adiciona pontos
+            categories.forEach(cat => {
+                if (scores[cat] !== undefined) scores[cat]++;
+            });
+
             if (isLast) {
-                calculateResult();
+                finishQuiz();
             } else {
                 const nextQ = currentQuestion + 1;
                 changeStep('quiz-q' + currentQuestion, 'quiz-q' + nextQ);
@@ -225,103 +194,91 @@ require('includes/connection.php');
             }
         }
 
+        // --- FUNÇÃO PARA VOLTAR ATRÁS ---
         function prevQuestion() {
             if (currentQuestion > 1) {
+                // Se estivermos na pergunta 2 ou mais, voltamos para a anterior
                 const prevQ = currentQuestion - 1;
                 changeStep('quiz-q' + currentQuestion, 'quiz-q' + prevQ);
+                
+                // Nota: Não removemos os pontos aqui para simplificar, 
+                // mas como o user vai clicar noutra opção ao avançar, os pontos acumulam.
+                // Para ser perfeito, devíamos limpar o score total e recalcular, 
+                // mas para um quiz simples, redefinir scores a 0 ao voltar é mais seguro:
+                if(prevQ === 1) { 
+                    // Se voltou ao inicio, limpa tudo
+                    allCats.forEach(c => scores[c] = 0); 
+                }
+
                 currentQuestion--;
                 updateProgressBar();
+            } else {
+                // Se estiver na Pergunta 1, volta para a Intro
+                changeStep('quiz-q1', 'quiz-intro');
+                document.getElementById('quiz-progress').classList.add('d-none');
+                currentQuestion = 0;
+                // Reseta scores
+                allCats.forEach(c => scores[c] = 0);
             }
         }
 
         function changeStep(hideId, showId) {
-            const hideEl = document.getElementById(hideId);
-            const showEl = document.getElementById(showId);
-            
-            // Simples troca de classes do Bootstrap para mostrar/esconder
-            hideEl.classList.add('d-none');
-            showEl.classList.remove('d-none');
+            document.getElementById(hideId).classList.add('d-none');
+            document.getElementById(showId).classList.remove('d-none');
         }
 
         function updateProgressBar() {
+            // Calcula a percentagem baseada na pergunta atual (ex: Pergunta 1 = 0%, Pergunta 5 = 80%, Fim = 100%)
             const percentage = ((currentQuestion - 1) / totalQuestions) * 100;
             document.querySelector('.progress-bar').style.width = percentage + '%';
         }
 
-        function calculateResult() {
-            document.getElementById('quiz-progress').classList.add('d-none');
-            
-            // Lógica simples de contagem
-            let scores = { fantasy: 0, scifi: 0, romance: 0, mystery: 0 };
-            for (let q in userAnswers) {
-                let cat = userAnswers[q];
-                if (scores[cat] !== undefined) {
-                    scores[cat]++;
-                }
-            }
-            
-            let maxScore = -1;
-            let bestCategory = 'fantasy'; // Default
-
-            for (const category in scores) {
-                if (scores[category] > maxScore) {
-                    maxScore = scores[category];
-                    bestCategory = category;
-                }
-            }
-
-            // Esconder a última pergunta e mostrar o resultado
+        function finishQuiz() {
             document.getElementById('quiz-q' + totalQuestions).classList.add('d-none');
-            document.getElementById('result-' + bestCategory).classList.remove('d-none');
-        }
+            document.getElementById('quiz-progress').classList.add('d-none');
+            document.getElementById('quiz-loading').classList.remove('d-none');
 
-        function restartQuiz() {
-            userAnswers = {};
-            currentQuestion = 0;
+            let maxScore = -1;
+            let winner = 'ficcao'; 
             
-            // Esconder todos os passos
-            const allSteps = document.querySelectorAll('.quiz-step');
-            allSteps.forEach(el => {
-                el.classList.add('d-none');
+            const shuffledCats = Object.keys(scores).sort(() => 0.5 - Math.random());
+
+            shuffledCats.forEach(cat => {
+                if (scores[cat] > maxScore) {
+                    maxScore = scores[cat];
+                    winner = cat;
+                }
             });
 
-            // Mostrar intro
-            document.getElementById('quiz-intro').classList.remove('d-none');
+            // AJAX call
+            fetch('ajax/recomendarLivro.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ categoria: winner })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('quiz-loading').classList.add('d-none');
+                
+                if(data.success) {
+                    document.getElementById('res-categoria-nome').innerText = data.categoria_nome;
+                    document.getElementById('res-titulo').innerText = data.livro.titulo;
+                    document.getElementById('res-autor').innerText = data.livro.autor;
+                    document.getElementById('res-img').src = data.livro.imagem;
+                    document.getElementById('res-link').href = 'livro.php?id=' + data.livro.id;
+                    
+                    document.getElementById('quiz-result').classList.remove('d-none');
+                } else {
+                    alert("Erro ao buscar recomendação: " + data.message);
+                    location.reload();
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Erro de conexão.");
+                location.reload();
+            });
         }
     </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const searchInput = document.getElementById('searchInput');
-      const searchSuggestions = document.getElementById('searchSuggestions');
-      const searchForm = document.getElementById('searchForm');
-      if (searchInput && searchSuggestions && searchForm) {
-          searchInput.addEventListener('input', function() {
-            if (this.value.length > 0) searchSuggestions.classList.add('show');
-            else searchSuggestions.classList.remove('show');
-          });
-          searchInput.addEventListener('focus', function() {
-            if (this.value.length > 0) searchSuggestions.classList.add('show');
-          });
-          document.addEventListener('click', function(e) {
-            if (!searchForm.contains(e.target)) searchSuggestions.classList.remove('show');
-          });
-          document.querySelectorAll('.suggestion-item').forEach(item => {
-            item.addEventListener('click', function() {
-              const title = this.querySelector('.suggestion-title').textContent;
-              searchInput.value = title; searchSuggestions.classList.remove('show'); searchInput.focus(); 
-            });
-          });
-          searchInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') { searchSuggestions.classList.remove('show'); searchInput.blur(); }
-          });
-          const seeAll = document.querySelector('.see-all-link');
-          if(seeAll) seeAll.addEventListener('click', function(e) { e.preventDefault(); searchForm.submit(); });
-      }
-    });
-    </script>
-
 </body>
 </html>
