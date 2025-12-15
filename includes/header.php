@@ -2,8 +2,6 @@
 include_once 'connection.php'; 
 ?>
 
-
-
 <header class="custom-header py-3 border-bottom bg-body-tertiary">
   <div class="container text-center">
     <!-- Linha com logo + pesquisa + conta -->

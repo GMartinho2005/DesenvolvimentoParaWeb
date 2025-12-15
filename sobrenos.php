@@ -23,7 +23,7 @@
         <div class="container my-5 py-5">
             <div class="row align-items-center g-5">
                 <div class="col-lg-6">
-                    <img src="imgs/a-photorealistic-image-of-a-modern-spaci_wn3zUQyCR5ym1SAb-JxuSA_GX0pJWXJTeS8riZ-XK3kIw.jpeg"
+                    <img src="imgs/sobrenos.jpeg"
                          class="img-fluid rounded shadow-lg w-100">
                 </div>
                 <div class="col-lg-6 text-center text-lg-start">

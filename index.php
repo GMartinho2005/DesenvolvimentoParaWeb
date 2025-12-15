@@ -20,7 +20,7 @@ $stmtN = $dbh->prepare($sqlN);
 $stmtN->execute();
 $db_novidades = $stmtN->fetchAll(PDO::FETCH_ASSOC);
 
-// BUSCAR LIVRO EM FOCO (FIXO NO ID 32) ---
+// BUSCAR LIVRO EM FOCO ---
 $id_fixo = 32; 
 
 $sqlF = "SELECT l.id, l.titulo, l.imagem_capa, a.nome as nome_autor 
@@ -63,7 +63,7 @@ $carousel_cats = $stmtC->fetchAll(PDO::FETCH_ASSOC);
     <main class="flex-grow-1">
         
         <div class="hero-banner position-relative">
-          <img width="100%" src="imgs/banner-panoramico-de-uma-biblioteca-mode_Opw2jWGISU6kp7XTbTct_A_YGX156qTQP2Rz6lQtWRABg.jpeg" class="hero-img">
+          <img width="100%" src="imgs/banner.jpeg" class="hero-img">
           <div class="hero-content text-white">
             <h1 class="fw-bold">Descobre novas leituras, vive novas histórias!</h1>
             <a href="estantedigital.php" class="btn btn-white btn-lg mt-3">Explorar →</a>
@@ -123,12 +123,10 @@ $carousel_cats = $stmtC->fetchAll(PDO::FETCH_ASSOC);
                 "img" => $db_book['imagem_capa'],
                 "title" => $db_book['titulo'],
                 "author" => $db_book['nome_autor'] ?? 'Autor Desconhecido',
-                // Link com a origem para o breadcrumb funcionar corretamente
                 "link" => "livro.php?id=" . $db_book['id'] . "&origem=novidadesnperder"
             ];
         }
         
-        // Se houver livros (e agora deve haver), mostra a linha
         if(count($books) > 0) {
             include 'includes/book_row.php'; 
         }
@@ -138,7 +136,7 @@ $carousel_cats = $stmtC->fetchAll(PDO::FETCH_ASSOC);
           <div class="carousel-inner">
             
             <div class="carousel-item active position-relative">
-              <img src="imgs/a-detailed-photograph-of-hands-carefully_uuXj8pvVQky38FItKQ3L0g_zfg-ecp4S3aNDWmMpiWbyg.jpeg" class="carousel-img d-block mx-auto w-100">
+              <img src="imgs/financarousel.jpeg" class="carousel-img d-block mx-auto w-100">
                 
                 <div class="position-absolute bottom-0 start-0 p-4 p-lg-5">
                     <h3 class="text-white fw-bold display-6 mb-1">
@@ -154,7 +152,7 @@ $carousel_cats = $stmtC->fetchAll(PDO::FETCH_ASSOC);
             </div>
 
             <div class="carousel-item position-relative">
-              <img src="imgs/a-warm-cinematic-photograph-of-weathered_KZWDuYg5SuOiq4z52l4tiQ_kiSEf0_HQTOWaHDJq9L7Vg.jpeg" class="carousel-img d-block mx-auto w-100">
+              <img src="imgs/classcarousel.jpeg" class="carousel-img d-block mx-auto w-100">
               
               <div class="position-absolute bottom-0 start-0 p-4 p-lg-5">
                 <h3 class="text-white fw-bold display-6 mb-1">
@@ -170,7 +168,7 @@ $carousel_cats = $stmtC->fetchAll(PDO::FETCH_ASSOC);
             </div>
 
             <div class="carousel-item position-relative">
-              <img src="imgs/a-cinematic-photograph-of-a-musician-s-h_zibuE9WbR4Gt3TSSTtkTcw_qoWLAJcMSm-u6O_NzNI8GA.jpeg" class="carousel-img d-block mx-auto w-100">
+              <img src="imgs/musicacarousel.jpeg" class="carousel-img d-block mx-auto w-100">
               
                     <div class="position-absolute bottom-0 start-0 p-4 p-lg-5">
                         <h3 class="text-white fw-bold display-6 mb-1" >

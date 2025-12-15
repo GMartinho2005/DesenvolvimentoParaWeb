@@ -1,7 +1,7 @@
 <?php
 require('includes/connection.php');
 
-// 1. VERIFICAR SE TEMOS ID
+// VERIFICAR SE TEMOS ID
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     header("Location: admin.php");
     exit;
@@ -9,7 +9,7 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 
 $id = (int)$_GET['id'];
 
-// 2. BUSCAR OS DADOS DO LIVRO ATUAL
+// BUSCAR OS DADOS DO LIVRO ATUAL
 $stmt = $dbh->prepare("SELECT * FROM livros WHERE id = :id");
 $stmt->execute([':id' => $id]);
 $livro = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -18,11 +18,11 @@ if (!$livro) {
     die("Livro não encontrado.");
 }
 
-// 3. BUSCAR LISTAS (Categorias e Autores)
+// BUSCAR LISTAS (Categorias e Autores)
 $cats = $dbh->query("SELECT * FROM categorias ORDER BY nome")->fetchAll(PDO::FETCH_ASSOC);
 $autores = $dbh->query("SELECT * FROM autores ORDER BY nome")->fetchAll(PDO::FETCH_ASSOC);
 
-// 4. PROCESSAR A GRAVAÇÃO (QUANDO CLICAS EM "ATUALIZAR")
+// PROCESSAR A GRAVAÇÃO
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     // Receber dados de texto
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $sinopse = $_POST['sinopse_completa'];
     $descricao_curta = $_POST['descricao_curta'];
     
-    // --- LÓGICA DE AUTOR (HÍBRIDA) ---
+    // --- LÓGICA DE AUTOR ---
     $autor_id = 0;
     $nome_autor_txt = "";
 
@@ -59,9 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    // --- LÓGICA DE IMAGEM (IMPORTANTE) ---
-    // Se o utilizador carregou uma nova imagem, usamos essa.
-    // Se NÃO carregou nada, mantemos a que já estava na base de dados ($livro['imagem_capa'])
+    // --- LÓGICA DE IMAGEM ---
+    // Se o utilizador carregou uma nova imagem, usa-se essa.
+    // Se NÃO carregou nada, mantem a que já estava na base de dados
     $caminho_imagem = $livro['imagem_capa']; // Começa com a antiga
     
     if (isset($_FILES['imagem_capa']) && $_FILES['imagem_capa']['error'] == 0) {
@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    // 5. EXECUTAR O UPDATE
+    // EXECUTAR O UPDATE
     if($autor_id > 0) {
         $sql = "UPDATE livros SET 
                 titulo = :titulo, 

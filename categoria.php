@@ -6,10 +6,10 @@ $limite_padrao = 8;
 $pagina = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($pagina - 1) * $limite_padrao;
 
-// 1. Identificar o tipo
+// Identificar o tipo
 $tipo_categoria = isset($_GET['tipo']) ? $_GET['tipo'] : 'ficcao';
 
-// 2. Buscar Info da Categoria
+// Buscar Info da Categoria
 $sqlCat = "SELECT * FROM categorias WHERE nome_url = :tipo" ;
 $stmtCat = $dbh->prepare($sqlCat);
 $stmtCat->bindValue(':tipo', $tipo_categoria);
@@ -18,7 +18,7 @@ $categoria = $stmtCat->fetch(PDO::FETCH_ASSOC);
 
 if (!$categoria) die("Página não encontrada.");
 
-// --- 3. PREPARAR QUERY INTELIGENTE ---
+// --- PREPARAR QUERY INTELIGENTE ---
 $sqlBase = "SELECT l.*, 
                    COUNT(a.id) as reviews, 
                    COALESCE(AVG(a.estrelas), 0) as rating 
@@ -31,7 +31,6 @@ $link_extra = ''; // Variável para passar a origem no URL
 
 if ($tipo_categoria == 'melhoravaliados') {
     // --- MELHOR AVALIADOS ---
-    // [CORREÇÃO] Filtrar apenas os ativos na contagem
     $stmtCount = $dbh->query("SELECT COUNT(*) FROM livros WHERE ativo = 1");
     $real_total = $stmtCount->fetchColumn();
     $total_registos = min($real_total, 8);
@@ -39,16 +38,13 @@ if ($tipo_categoria == 'melhoravaliados') {
     $restantes = 8 - $offset;
     $limite_sql = ($restantes > 0) ? min($limite_padrao, $restantes) : 0;
 
-    // [CORREÇÃO] Adicionado WHERE l.ativo = 1
     $sqlFinal = $sqlBase . " WHERE l.ativo = 1 GROUP BY l.id ORDER BY rating DESC, reviews DESC LIMIT :limite OFFSET :offset";
     $stmtLivros = $dbh->prepare($sqlFinal);
     
-    // Define a origem para o link
     $link_extra = '&origem=melhoravaliados';
 
 } elseif ($tipo_categoria == 'novidadesnperder') {
     // --- NOVIDADES ---
-    // [CORREÇÃO] Filtrar apenas os ativos na contagem
     $stmtCount = $dbh->query("SELECT COUNT(*) FROM livros WHERE ativo = 1");
     $real_total = $stmtCount->fetchColumn();
     $total_registos = min($real_total, 10);
@@ -56,16 +52,13 @@ if ($tipo_categoria == 'melhoravaliados') {
     $restantes = 10 - $offset;
     $limite_sql = ($restantes > 0) ? min($limite_padrao, $restantes) : 0;
 
-    // [CORREÇÃO] Adicionado WHERE l.ativo = 1
     $sqlFinal = $sqlBase . " WHERE l.ativo = 1 GROUP BY l.id ORDER BY l.id DESC LIMIT :limite OFFSET :offset";
     $stmtLivros = $dbh->prepare($sqlFinal);
     
-    // Define a origem para o link
     $link_extra = '&origem=novidadesnperder';
 
 } else {
     // --- CATEGORIA NORMAL ---
-    // Já tinhas o ativo = 1 aqui, mantive
     $stmtCount = $dbh->prepare("SELECT COUNT(*) FROM livros WHERE categoria_id = :cat_id AND ativo = 1");
     $stmtCount->bindValue(':cat_id', $categoria['id']);
     $stmtCount->execute();
@@ -73,7 +66,6 @@ if ($tipo_categoria == 'melhoravaliados') {
 
     $limite_sql = $limite_padrao;
 
-    // [CORREÇÃO] Adicionado AND l.ativo = 1 na query dos livros
     $sqlFinal = $sqlBase . " WHERE l.categoria_id = :cat_id AND l.ativo = 1 GROUP BY l.id LIMIT :limite OFFSET :offset";
     $stmtLivros = $dbh->prepare($sqlFinal);
     $stmtLivros->bindValue(':cat_id', $categoria['id']);
@@ -212,86 +204,5 @@ if (isset($_SESSION['username']) && !empty($_SESSION['username'])) {
 
 <?php require('includes/footer.php'); ?>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const searchInput = document.getElementById('searchInput');
-  const searchSuggestions = document.getElementById('searchSuggestions');
-  const searchForm = document.getElementById('searchForm');
-
-  if(searchInput && searchSuggestions && searchForm){
-      
-      // Função para fechar
-      function closeSuggestions() {
-          searchSuggestions.classList.remove('show');
-      }
-
-      searchInput.addEventListener('input', function() {
-        const query = this.value.trim();
-
-        if (query.length < 2) {
-            closeSuggestions();
-            return;
-        }
-
-        // Chamada AJAX
-        fetch('ajax/pesquisa.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ termo: query })
-        })
-        .then(response => response.json())
-        .then(data => {
-            let html = '';
-
-            // 1. SE HOUVER LIVROS
-            if (data.livros && data.livros.length > 0) {
-                html += '<div class="suggestion-header"><small>Livros Encontrados</small></div>';
-                
-                data.livros.forEach(livro => {
-                    html += `
-                        <div class="suggestion-item" onclick="window.location.href='livro.php?id=${livro.id}'">
-                            <span class="suggestion-title">${livro.titulo}</span>
-                            <small class="suggestion-author">${livro.autor || 'Autor Desconhecido'}</small>
-                        </div>
-                    `;
-                });
-            } 
-            // 2. SE NÃO HOUVER RESULTADOS
-            else {
-                html = '<div class="p-3 text-muted small text-center">Nenhum livro encontrado.</div>';
-            }
-
-            searchSuggestions.innerHTML = html;
-            searchSuggestions.classList.add('show');
-        })
-        .catch(err => console.error(err));
-      });
-
-      // Fechar ao clicar fora
-      document.addEventListener('click', function(e) {
-        if (!searchForm.contains(e.target)) closeSuggestions();
-      });
-
-      // Tecla Escape
-      searchInput.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-          closeSuggestions();
-          searchInput.blur();
-        }
-      });
-
-      // Submit do formulário (Enter) - Redireciona para pesquisa geral se quiseres
-      searchForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        // Opcional: Podes manter isto se quiseres uma página de resultados
-        /* const query = searchInput.value.trim();
-        if(query) {
-            window.location.href = 'index.php?q=' + encodeURIComponent(query);
-        }
-        */
-      });
-  }
-});
-</script>
 </body>
 </html>

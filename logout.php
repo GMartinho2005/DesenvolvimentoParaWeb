@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// 1. Limpar a Sessão no Servidor (PHP)
+// Limpar a Sessão no Servidor
 $_SESSION = array();
 
 // Apagar o cookie da sessão

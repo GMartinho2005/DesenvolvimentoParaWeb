@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Chamada AJAX
         fetch('ajax/pesquisa.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -28,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             let html = '';
 
-            // 1. SE HOUVER LIVROS
+            // SE HOUVER LIVROS
             if (data.livros && data.livros.length > 0) {
                 html += '<div class="suggestion-header"><small>Livros Encontrados</small></div>';
                 
@@ -41,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     `;
                 });
             } 
-            // 2. SE NÃO HOUVER RESULTADOS
+            // SE NÃO HOUVER RESULTADOS
             else {
                 html = '<div class="p-3 text-muted small text-center">Nenhum livro encontrado.</div>';
             }
@@ -57,7 +56,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!searchForm.contains(e.target)) closeSuggestions();
       });
 
-      // Tecla Escape
       searchInput.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
           closeSuggestions();
@@ -65,15 +63,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
 
-      // Submit do formulário (Enter) - Redireciona para pesquisa geral se quiseres
+      // Redireciona para pesquisa geral se quiseres
       searchForm.addEventListener('submit', function(e) {
         e.preventDefault();
-        // Opcional: Podes manter isto se quiseres uma página de resultados
-        /* const query = searchInput.value.trim();
-        if(query) {
-            window.location.href = 'index.php?q=' + encodeURIComponent(query);
-        }
-        */
       });
   }
 });

@@ -1,9 +1,8 @@
 <?php
-// ajax/adicionarfav.php
 header('Content-Type: application/json');
 require('../includes/connection.php');
 
-// 1. Verificar Login
+// Verificar Login
 if (!isset($_SESSION['username'])) {
     echo json_encode(['success' => false, 'message' => 'Precisa de fazer login.']);
     exit;
@@ -14,13 +13,12 @@ $input = file_get_contents('php://input');
 $data = json_decode($input, true);
 $livro_id = isset($data['livro_id']) ? (int)$data['livro_id'] : 0;
 
-// 2. Obter ID do User
+// Obter ID do User
 $user_id = 0;
 if (isset($_SESSION['id'])) $user_id = $_SESSION['id'];
 elseif (isset($_SESSION['user_id'])) $user_id = $_SESSION['user_id'];
 elseif (isset($_SESSION['uid'])) $user_id = $_SESSION['uid'];
 
-// Fallback
 if ($user_id == 0 && isset($_SESSION['username'])) {
     try {
         $s = $dbh->prepare("SELECT id FROM users WHERE username = ?");
@@ -31,9 +29,9 @@ if ($user_id == 0 && isset($_SESSION['username'])) {
 
 if ($livro_id > 0 && $user_id > 0) {
     try {
-        // --- LÓGICA DO SOFT DELETE ---
+        // --- SOFT DELETE ---
         
-        // 1. Verificar se o registo já existe (ativo ou inativo)
+        // Verificar se o registo já existe (ativo ou inativo)
         $checkSql = "SELECT id, ativo FROM favoritos WHERE user_id = :uid AND livro_id = :lid";
         $checkStmt = $dbh->prepare($checkSql);
         $checkStmt->execute([':uid' => $user_id, ':lid' => $livro_id]);

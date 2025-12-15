@@ -1,9 +1,8 @@
 <?php
-// ajax/alterarpassword.php
 header('Content-Type: application/json');
 require('../includes/connection.php');
 
-// 2. Receber Dados
+// Receber Dados
 $input = file_get_contents('php://input');
 $data = json_decode($input, true);
 
@@ -11,18 +10,17 @@ $passAtual = $data['pass_atual'] ?? '';
 $passNova = $data['pass_nova'] ?? '';
 $passConfirmar = $data['pass_confirmar'] ?? '';
 
-// 3. Validações
+// Validações
 if (empty($passAtual) || empty($passNova) || empty($passConfirmar)) {
     echo json_encode(['success' => false, 'message' => 'Preenche todos os campos.']);
     exit;
 }
 
-// --- NOVA VALIDAÇÃO: Antiga igual à Nova ---
+// --- NOVA VALIDAÇÃO ---
 if ($passAtual === $passNova) {
     echo json_encode(['success' => false, 'message' => 'A nova password não pode ser igual à antiga.']);
     exit;
 }
-// -------------------------------------------
 
 if ($passNova !== $passConfirmar) {
     echo json_encode(['success' => false, 'message' => 'A nova password e a confirmação não coincidem.']);
@@ -35,7 +33,7 @@ if (strlen($passNova) < 6) {
 }
 
 try {
-    // 4. Buscar Password Atual na BD (Tabela 'utilizador')
+    // Procurar Password Atual na BD
     $stmt = $dbh->prepare("SELECT id, password_hash FROM utilizador WHERE nome_utilizador = ?");
     $stmt->execute([$_SESSION['username']]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -45,13 +43,13 @@ try {
         exit;
     }
 
-    // 5. Verificar a Hash da password antiga
+    // Verificar a Hash da password antiga
     if (!password_verify($passAtual, $user['password_hash'])) {
         echo json_encode(['success' => false, 'message' => 'A password atual está incorreta.']);
         exit;
     }
 
-    // 6. Atualizar Password
+    // Atualizar Password
     $novaHash = password_hash($passNova, PASSWORD_DEFAULT);
     
     $update = $dbh->prepare("UPDATE utilizador SET password_hash = ? WHERE id = ?");

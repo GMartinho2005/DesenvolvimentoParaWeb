@@ -1,5 +1,4 @@
 <?php
-// ajax/recuperarpassword.php
 header('Content-Type: application/json');
 require('../includes/connection.php');
 
@@ -11,7 +10,7 @@ $user = $data['user'] ?? '';
 $email = $data['email'] ?? '';
 $novaPass = $data['nova_pass'] ?? '';
 
-// 1. Validações Básicas
+// Validações Básicas
 if (empty($user) || empty($email) || empty($novaPass)) {
     echo json_encode(['success' => false, 'message' => 'Por favor, preencha todos os campos.']);
     exit;
@@ -23,14 +22,13 @@ if (strlen($novaPass) < 6) {
 }
 
 try {
-    // 2. Verificar se existe este par (User + Email)
-    // Isto serve como "prova" de identidade simplificada
+    // Verificar se existe User + Email
     $stmt = $dbh->prepare("SELECT id FROM utilizador WHERE nome_utilizador = ? AND email = ?");
     $stmt->execute([$user, $email]);
     $conta = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($conta) {
-        // 3. Se encontrou, atualiza a password
+        // Se encontrou, atualiza a password
         $novaHash = password_hash($novaPass, PASSWORD_DEFAULT);
         
         $update = $dbh->prepare("UPDATE utilizador SET password_hash = ? WHERE id = ?");

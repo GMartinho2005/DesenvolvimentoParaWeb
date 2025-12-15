@@ -165,9 +165,7 @@ require('includes/connection.php');
         let currentQuestion = 0;
         const totalQuestions = 5;
 
-        // Array para guardar o histórico de respostas para poder reverter a pontuação se o user voltar atrás
-        // (Simplificação: ao voltar, apenas recuamos no passo, a pontuação recalcula-se ao avançar de novo)
-        
+        // Array para guardar o histórico de respostas para poder reverter a pontuação se o user voltar atrás        
         const allCats = ['ficcao', 'romance', 'fantasia', 'biografia', 'classica', 'conto', 'financas', 'halloween', 'historia', 'humor', 'musica', 'poesia', 'policial'];
         allCats.forEach(c => scores[c] = 0);
 
@@ -200,11 +198,7 @@ require('includes/connection.php');
                 // Se estivermos na pergunta 2 ou mais, voltamos para a anterior
                 const prevQ = currentQuestion - 1;
                 changeStep('quiz-q' + currentQuestion, 'quiz-q' + prevQ);
-                
-                // Nota: Não removemos os pontos aqui para simplificar, 
-                // mas como o user vai clicar noutra opção ao avançar, os pontos acumulam.
-                // Para ser perfeito, devíamos limpar o score total e recalcular, 
-                // mas para um quiz simples, redefinir scores a 0 ao voltar é mais seguro:
+
                 if(prevQ === 1) { 
                     // Se voltou ao inicio, limpa tudo
                     allCats.forEach(c => scores[c] = 0); 
@@ -228,7 +222,7 @@ require('includes/connection.php');
         }
 
         function updateProgressBar() {
-            // Calcula a percentagem baseada na pergunta atual (ex: Pergunta 1 = 0%, Pergunta 5 = 80%, Fim = 100%)
+            // Calcula a percentagem baseada na pergunta atual
             const percentage = ((currentQuestion - 1) / totalQuestions) * 100;
             document.querySelector('.progress-bar').style.width = percentage + '%';
         }
@@ -250,7 +244,6 @@ require('includes/connection.php');
                 }
             });
 
-            // AJAX call
             fetch('ajax/recomendarLivro.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

@@ -1,7 +1,7 @@
 <?php
 require('includes/connection.php');
 
-// 1. Validar ID
+// Validar ID
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     header("Location: index.php");
     exit;
@@ -9,7 +9,7 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 
 $livro_id = (int)$_GET['id'];
 
-// 2. QUERY PRINCIPAL
+// QUERY PRINCIPAL
 $sql = "SELECT l.*, 
                c.nome as nome_categoria, c.nome_url,
                a.nome as nome_autor, a.biografia as bio_autor,
@@ -36,7 +36,7 @@ $media_exata = $livro['rating'];
 $estrelas_visual = round($media_exata);
 $total_reviews = $livro['reviews'];
 
-// 3. QUERY SECUNDÁRIA: Outros livros DO MESMO AUTOR
+// QUERY SECUNDÁRIA: Outros livros DO MESMO AUTOR
 $sqlSugestao = "SELECT id, titulo, imagem_capa, autor_id 
                 FROM livros 
                 WHERE autor_id = :aid AND id != :lid AND ativo = 1
@@ -156,16 +156,13 @@ $outros_livros = array_slice($todos_sugestao, 0, 4);
                         </button>
                     <?php else: ?>
     <?php 
-        // Cria o link atual para sabermos para onde voltar
-        // Ex: livro.php?id=15
+        // Cria o link atual para saber para onde voltar
         $link_atual = "livro.php?id=" . $livro['id'];
         
-        // Se quiseres manter a origem (ex: vindo das novidades), podes adicionar:
         if(isset($_GET['origem'])) {
             $link_atual .= "&origem=" . htmlspecialchars($_GET['origem']);
         }
 
-        // Codifica o link para poder passar na URL
         $link_retorno = urlencode($link_atual);
     ?>
 

@@ -1,13 +1,12 @@
 <?php
 require('includes/connection.php');
 
-// --- 1. LÓGICA DE AÇÕES (REMOVER e REATIVAR) ---
+// --- LÓGICA DE AÇÕES (REMOVER e REATIVAR) ---
 
-// Ação: REMOVER (Soft Delete -> ativo = 0)
+// REMOVER (Soft Delete -> ativo = 0)
 if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id'])) {
     $id_user = (int)$_GET['id'];
     
-    // Proteção: Não apagar o próprio admin logado
     if(isset($_SESSION['user_id']) && $id_user == $_SESSION['user_id']) {
         $erro = "Não podes remover a tua própria conta!";
     } else {
@@ -32,8 +31,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'activate' && isset($_GET['id']
     }
 }
 
-// --- 2. BUSCAR TODOS OS UTILIZADORES (ATIVOS E INATIVOS) ---
-// Removi o "WHERE ativo = 1" para mostrar todos
+// --- BUSCAR TODOS OS UTILIZADORES (ATIVOS E INATIVOS) ---
 $sql = "SELECT * FROM utilizador ORDER BY ativo DESC, id DESC";
 $stmt = $dbh->prepare($sql);
 $stmt->execute();

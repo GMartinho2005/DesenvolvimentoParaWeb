@@ -34,7 +34,7 @@ if (!isset($_SESSION['username'])) {
         </h1>
 
         <?php
-        // 1. Obter ID do User
+        // Obter ID do User
         $user_id = 0;
         if (isset($_SESSION['id'])) $user_id = $_SESSION['id'];
         elseif (isset($_SESSION['user_id'])) $user_id = $_SESSION['user_id'];
@@ -46,7 +46,7 @@ if (!isset($_SESSION['username'])) {
             if($r = $s->fetchObject()) $user_id = $r->id;
         }
 
-        // 2. BUSCAR DADOS COMPLETOS DOS FAVORITOS
+        // BUSCAR DADOS COMPLETOS DOS FAVORITOS
         $sql = "SELECT l.id, l.titulo, l.autor, l.imagem_capa 
         FROM favoritos f
         JOIN livros l ON f.livro_id = l.id
@@ -172,12 +172,12 @@ if (!isset($_SESSION['username'])) {
         .then(response => response.json())
         .then(data => {
             if(data.success) {
-                // 1. Fecha Modal
+                // Fecha Modal
                 const modalEl = document.getElementById('modalConfirmar');
                 const modalInstance = bootstrap.Modal.getInstance(modalEl);
                 modalInstance.hide();
 
-                // 2. Remove Cartão (Animação suave)
+                // Remove Cartão
                 const card = document.getElementById('card-livro-' + idParaRemover);
                 if(card) {
                     card.style.transition = 'opacity 0.5s';
@@ -185,7 +185,6 @@ if (!isset($_SESSION['username'])) {
                     setTimeout(() => {
                         card.remove();
                         
-                        // 3. VERIFICAÇÃO CORRIGIDA:
                         // Verifica se a lista ficou vazia APÓS remover o elemento
                         const container = document.getElementById('lista-favoritos');
                         if(container && container.children.length === 0) { 
@@ -195,7 +194,7 @@ if (!isset($_SESSION['username'])) {
                     }, 500);
                 }
 
-                // 4. Mostra Toast
+                // Mostra Toast
                 const toastEl = document.getElementById('toastRemovido');
                 const toast = new bootstrap.Toast(toastEl);
                 toast.show();

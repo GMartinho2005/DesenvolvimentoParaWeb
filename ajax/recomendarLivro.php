@@ -1,5 +1,4 @@
 <?php
-// ajax/recomendarLivro.php
 header('Content-Type: application/json');
 require('../includes/connection.php');
 
@@ -14,18 +13,17 @@ if (empty($categoria_url)) {
 }
 
 try {
-    // 1. Descobrir o ID e Nome da Categoria
+    // Descobrir o ID e Nome da Categoria
     $stmtCat = $dbh->prepare("SELECT id, nome FROM categorias WHERE nome_url = ?");
     $stmtCat->execute([$categoria_url]);
     $cat = $stmtCat->fetch(PDO::FETCH_ASSOC);
 
     if (!$cat) {
-        // Fallback se não encontrar (ex: manda um livro de ficção)
         $cat = ['id' => 1, 'nome' => 'Ficção Científica'];
     }
 
-    // 2. Buscar um livro aleatório dessa categoria
-    // Fazemos JOIN com autores para ter o nome do autor
+    // Buscar um livro aleatório dessa categoria
+    // JOIN com autores para ter o nome do autor
     $sql = "SELECT l.id, l.titulo, l.imagem_capa, a.nome as nome_autor 
             FROM livros l 
             LEFT JOIN autores a ON l.autor_id = a.id

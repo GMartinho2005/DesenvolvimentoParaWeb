@@ -1,15 +1,13 @@
 <?php
-// includes/seguranca.php
-
-// 1. DETEÇÃO INTELIGENTE
+// DETEÇÃO INTELIGENTE
 // Verifica se o ficheiro que está a ser executado está dentro da pasta 'ajax'.
 // Se estiver, pára imediatamente. Isto impede que o código <script>
-// estrague o JSON das tuas funcionalidades (login, favoritos, password).
+// estrague o JSON das funcionalidades (login, favoritos, password).
 if (strpos($_SERVER['SCRIPT_NAME'], '/ajax/') !== false) {
     return;
 }
 
-// 2. SEGURANÇA VISUAL (Apenas para páginas normais)
+// SEGURANÇA VISUAL
 // Só executa se o user estiver logado
 if (isset($_SESSION['username'])) {
     echo "

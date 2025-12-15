@@ -1,9 +1,8 @@
 <?php
-// ajax/removerfav.php
 header('Content-Type: application/json');
 require('../includes/connection.php');
 
-// 1. Verificar Login
+// Verificar Login
 if (!isset($_SESSION['username'])) {
     echo json_encode(['success' => false, 'message' => 'Sessão expirada.']);
     exit;
@@ -14,13 +13,12 @@ $input = file_get_contents('php://input');
 $data = json_decode($input, true);
 $livro_id = isset($data['livro_id']) ? (int)$data['livro_id'] : 0;
 
-// 2. Obter ID do User
+// Obter ID do User
 $user_id = 0;
 if (isset($_SESSION['id'])) $user_id = $_SESSION['id'];
 elseif (isset($_SESSION['user_id'])) $user_id = $_SESSION['user_id'];
 elseif (isset($_SESSION['uid'])) $user_id = $_SESSION['uid'];
 
-// Fallback pelo username
 if ($user_id == 0 && isset($_SESSION['username'])) {
     try {
         $s = $dbh->prepare("SELECT id FROM users WHERE username = ?");
@@ -31,8 +29,7 @@ if ($user_id == 0 && isset($_SESSION['username'])) {
 
 if ($livro_id > 0 && $user_id > 0) {
     try {
-        // 3. ALTERAÇÃO AQUI: Em vez de DELETE, fazemos UPDATE para esconder
-        // Mudamos o 'ativo' para 0 (removido logicamente)
+        // Mudar o 'ativo' para 0 (removido logicamente)
         $sql = "UPDATE favoritos SET ativo = 0 WHERE user_id = :uid AND livro_id = :lid";
         
         $stmt = $dbh->prepare($sql);

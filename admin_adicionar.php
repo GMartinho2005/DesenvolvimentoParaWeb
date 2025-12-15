@@ -1,11 +1,11 @@
 <?php
 require('includes/connection.php');
 
-// 1. BUSCAR DADOS PARA AS DROPDOWNS
+// BUSCAR DADOS PARA AS DROPDOWNS
 $cats = $dbh->query("SELECT * FROM categorias ORDER BY nome")->fetchAll(PDO::FETCH_ASSOC);
 $autores = $dbh->query("SELECT * FROM autores ORDER BY nome")->fetchAll(PDO::FETCH_ASSOC);
 
-// 2. PROCESSAR O FORMULÁRIO
+// PROCESSAR O FORMULÁRIO
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     // Dados básicos
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Verificar se o utilizador preencheu o campo "Novo Autor"
     if (!empty($_POST['novo_autor_nome'])) {
         
-        // 1. Criar o novo autor na tabela 'autores'
+        // Criar o novo autor na tabela 'autores'
         $novo_nome = $_POST['novo_autor_nome'];
         $nova_bio = $_POST['novo_autor_bio'] ?? ''; // Pode vir vazio
 
@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmtAutor = $dbh->prepare($sqlAutor);
         $stmtAutor->execute([':nome' => $novo_nome, ':bio' => $nova_bio]);
         
-        // 2. Obter o ID que acabou de ser criado (Magia do PDO)
+        // Obter o ID que acabou de ser criado (Magia do PDO)
         $autor_id = $dbh->lastInsertId();
         $nome_autor_txt = $novo_nome;
 
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    // 3. UPLOAD DA IMAGEM
+    // UPLOAD DA IMAGEM
     $caminho_imagem = "";
     if (isset($_FILES['imagem_capa']) && $_FILES['imagem_capa']['error'] == 0) {
         $extensao = pathinfo($_FILES['imagem_capa']['name'], PATHINFO_EXTENSION);
@@ -60,8 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    // 4. GRAVAR O LIVRO
-    // Se o user não selecionou nem criou autor, dá erro (opcional, aqui assume 0)
+    // GRAVAR O LIVRO
+    // Se o user não selecionou nem criou autor, dá erro
     if($autor_id > 0) {
         $sql = "INSERT INTO livros (titulo, categoria_id, autor_id, autor, editora, isbn, paginas, idioma, edicao, sinopse_completa, descricao_curta, imagem_capa, ativo) 
                 VALUES (:titulo, :cat_id, :aut_id, :aut_nome, :editora, :isbn, :paginas, :idioma, :edicao, :sinopse, :desc_curta, :img, 1)";

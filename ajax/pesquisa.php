@@ -1,5 +1,4 @@
 <?php
-// ajax/pesquisa.php
 header('Content-Type: application/json');
 require('../includes/connection.php');
 
@@ -19,7 +18,6 @@ $termo_fim    = '%' . $termo_original;
 
 try {
     // PESQUISAR APENAS LIVROS ATIVOS
-    // [ALTERAÇÃO]: Adicionado AND l.ativo = 1
     $sqlLivros = "SELECT l.id, l.titulo, a.nome as autor 
                   FROM livros l 
                   LEFT JOIN autores a ON l.autor_id = a.id

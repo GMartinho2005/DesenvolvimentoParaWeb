@@ -4,7 +4,7 @@ header('Content-Type: application/json');
 // Caminho para a conexão
 require('../includes/connection.php');
 
-// 1. Verificar Login
+// Verificar Login
 if (!isset($_SESSION['username'])) {
     echo json_encode(['success' => false, 'message' => 'Precisas de estar logado.']);
     exit;
@@ -16,13 +16,13 @@ $data = json_decode($input, true);
 $livro_id = isset($data['livro_id']) ? (int)$data['livro_id'] : 0;
 $estrelas = isset($data['estrelas']) ? (int)$data['estrelas'] : 0;
 
-// 2. Obter ID do Utilizador
+// Obter ID do Utilizador
 $user_id = 0;
 if (isset($_SESSION['id'])) $user_id = $_SESSION['id'];
 elseif (isset($_SESSION['user_id'])) $user_id = $_SESSION['user_id'];
 elseif (isset($_SESSION['uid'])) $user_id = $_SESSION['uid'];
 
-// Fallback: buscar ID pelo username se não estiver na sessão
+// Vai buscar o ID pelo username se não estiver na sessão
 if ($user_id == 0 && isset($_SESSION['username'])) {
     try {
         $stmtUser = $dbh->prepare("SELECT id FROM users WHERE username = ?");
@@ -33,7 +33,7 @@ if ($user_id == 0 && isset($_SESSION['username'])) {
     } catch (Exception $e) {}
 }
 
-// 3. Processar Avaliação
+// Processar Avaliação
 if ($livro_id > 0 && $estrelas >= 1 && $estrelas <= 5 && $user_id > 0) {
     try {
         // --- VERIFICAR DUPLICADO ---
@@ -44,7 +44,6 @@ if ($livro_id > 0 && $estrelas >= 1 && $estrelas <= 5 && $user_id > 0) {
              echo json_encode(['success' => false, 'message' => 'Já avaliou este livro anteriormente!']);
              exit;
         }
-        // ---------------------------
 
         $sql = "INSERT INTO avaliacoes (livro_id, user_id, estrelas) VALUES (:lid, :uid, :est)";
         $stmt = $dbh->prepare($sql);

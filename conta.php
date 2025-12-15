@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// 1. SE O UTILIZADOR JÁ ESTIVER LOGADO
+// SE O UTILIZADOR JÁ ESTIVER LOGADO
 if (isset($_SESSION['username'])) {
     // Verifica se há um link de retorno
     $voltar = $_REQUEST['voltar'] ?? ''; 
@@ -14,7 +14,7 @@ if (isset($_SESSION['username'])) {
     exit;
 }
 
-// 2. PROCESSAR O LOGIN
+// PROCESSAR O LOGIN
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_submit'])) {
 
     // Configuração da BD
@@ -80,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_submit'])) {
     if ($error) {
         $_SESSION['login_error'] = $error;
         
-        // Se falhou, mantemos o link de voltar na URL para tentar de novo
+        // Se falhou, mantem o link de voltar na URL para tentar de novo
         $qs = "";
         if(isset($_POST['voltar']) && !empty($_POST['voltar'])) {
              $qs = "?voltar=" . urlencode($_POST['voltar']);

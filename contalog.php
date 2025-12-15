@@ -34,11 +34,11 @@ if (empty($_SESSION['username']) && empty($_SESSION['user_id']) && empty($_SESSI
         <?php
         // --- OBTENÇÃO DE DADOS SEGURA ---
         
-        // 1. Definir variáveis padrão para evitar erros de "Undefined"
+        // Definir variáveis padrão para evitar erros de "Undefined"
         $nomeUser = 'Utilizador';
         $emailUser = 'Email não disponível';
         
-        // 2. Tentar obter o identificador da sessão de forma segura
+        // Tentar obter o identificador da sessão de forma segura
         $sessionUser = $_SESSION['username'] ?? ''; 
 
         if (!empty($sessionUser)) {
